@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco2Dev | Cartographie des Terroirs Agricoles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2dd4bf;
+            --primary-dark: #14b8a6;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.2rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('au-dessus-des-epingles-sur-la-carte.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: white;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Maps Section */
+        .maps {
+            padding: 8rem 2rem;
+            background: var(--light);
+        }
+
+        .maps-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .map-selector {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .map-select {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232dd4bf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            padding-right: 4rem;
+        }
+
+        .map-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.2);
+        }
+
+        .map-viewer {
+            position: relative;
+            height: 85vh;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            background: white;
+            border: 3px solid var(--primary);
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 25px !important;
+            left: 25px !important;
+            top: auto !important;
+            right: auto !important;
+            z-index: 10000 !important;
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin: 0 !important;
+        }
+        
+        .fullscreen-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Mode plein écran */
+        .map-viewer.fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 99999 !important;
+            border-radius: 0 !important;
+            border: none !important;
+        }
+        
+        .map-viewer.fullscreen .fullscreen-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .map-viewer.fullscreen .fullscreen-btn {
+            bottom: 30px !important;
+            left: 30px !important;
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* Indicateur de chargement */
+        .map-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loading-spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--primary);
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .map-viewer {
+                height: 60vh;
+            }
+            
+            .fullscreen-btn {
+                bottom: 15px !important;
+                left: 15px !important;
+                padding: 10px 16px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .btn-text {
+                display: none;
+            }
+            
+            .fullscreen-btn .fas {
+                margin-right: 0;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Eco2Dev</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="#cartes" class="nav-link">Cartes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-map-marked-alt"></i> Programme AFD
+            </div>
+            <h1>Cartographie des Terroirs Agricoles de Côte d'Ivoire</h1>
+            <p>
+                Découvrez notre projet de cartographie participative des parcelles rurales 
+                pour un développement durable et équitable des communautés agricoles.
+            </p>
+            <a href="#cartes" class="hero-cta">
+                Explorer les cartes <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Maps Section -->
+    <section id="cartes" class="maps">
+        <div class="maps-container">
+            <div class="map-selector">
+                <select class="map-select" id="mapSelector" onchange="changeMap()">
+                    <option value="./Akouré/index.html">Terroir d'Akouré</option>
+                    <option value="./Beriaboukro/index.html">Terroir de Beriaboukro</option>
+                    <option value="./Bofoin/index.html">Terroir de Bofoin N'Gattakro</option>
+                    <option value="./Brakaguhé/index.html">Terroir de Brakaguhé</option>
+                    <option value="./M_Brimbo/index.html">Terroir de M'Brimbo</option>
+                    <option value="./Abatta/index.html">Quartier d'Abatta - Bingerville</option>
+                </select>
+            </div>
+
+            <div class="map-viewer">
+                <!-- Bouton plein écran -->
+                <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Plein écran">
+                    <i class="fas fa-expand"></i>
+                    <span class="btn-text">Agrandir la carte</span>
+                </button>
+                
+                <!-- Indicateur de chargement -->
+                <div class="map-loading" id="mapLoading">
+                    <div class="loading-spinner"></div>
+                    <span>Chargement de la carte...</span>
+                </div>
+
+                <iframe id="mapFrame" class="map-frame" src="./Akouré/index.html" 
+                    onload="hideLoading()"></iframe>                        
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Fonction pour changer la carte
+        function changeMap() {
+            const selector = document.getElementById('mapSelector');
+            const mapFrame = document.getElementById('mapFrame');
+            const selectedMap = selector.value;
+            
+            // Afficher l'indicateur de chargement
+            showLoading();
+            
+            // Met à jour la source de l'iframe
+            mapFrame.src = selectedMap;
+        }
+
+        // Afficher l'indicateur de chargement
+        function showLoading() {
+            document.getElementById('mapLoading').style.display = 'flex';
+        }
+
+        // Cacher l'indicateur de chargement
+        function hideLoading() {
+            document.getElementById('mapLoading').style.display = 'none';
+        }
+        
+        // Fonction pour le mode plein écran
+        function toggleFullscreen() {
+            const mapViewer = document.querySelector('.map-viewer');
+            const fullscreenBtn = document.querySelector('.fullscreen-btn');
+            const icon = fullscreenBtn.querySelector('i');
+            const btnText = fullscreenBtn.querySelector('.btn-text');
+            
+            if (!document.fullscreenElement) {
+                // Entrer en mode plein écran
+                if (mapViewer.requestFullscreen) {
+                    mapViewer.requestFullscreen();
+                }
+                mapViewer.classList.add('fullscreen');
+                icon.className = 'fas fa-compress';
+                btnText.textContent = 'Réduire la carte';
+            } else {
+                // Quitter le mode plein écran
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+                mapViewer.classList.remove('fullscreen');
+                icon.className = 'fas fa-expand';
+                btnText.textContent = 'Agrandir la carte';
+            }
+        }
+
+        // Gérer la sortie du mode plein écran
+        document.addEventListener('fullscreenchange', function() {
+            const mapViewer = document.querySelector('.map-viewer');
+            const fullscreenBtn = document.querySelector('.fullscreen-btn');
+            const icon = fullscreenBtn.querySelector('i');
+            const btnText = fullscreenBtn.querySelector('.btn-text');
+            
+            if (!document.fullscreenElement) {
+                mapViewer.classList.remove('fullscreen');
+                icon.className = 'fas fa-expand';
+                btnText.textContent = 'Agrandir la carte';
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cacher l'indicateur de chargement après le chargement initial
+            setTimeout(hideLoading, 2000);
+        });
+    </script>
+</body>
+</html>
