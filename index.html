@@ -100,7 +100,7 @@
 
         /* Hero Section */
         .hero {
-            height: 100vh;
+            height: 70vh; 
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
                 url('au-dessus-des-epingles-sur-la-carte.jpg') center/cover;
             display: flex;
@@ -110,6 +110,7 @@
             color: white;
             position: relative;
             overflow: hidden;
+            margin-top: 80px; 
         }
 
         .hero::before {
@@ -143,15 +144,15 @@
 
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-size: clamp(2rem, 6vw, 4rem); /* Légèrement réduit */
             font-weight: 900;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             line-height: 1.1;
         }
 
         .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2.5rem;
+            font-size: 1.1rem; /* Légèrement réduit */
+            margin-bottom: 2rem;
             opacity: 0.95;
             max-width: 700px;
             margin-left: auto;
@@ -160,13 +161,13 @@
 
         .hero-cta {
             display: inline-block;
-            padding: 1.2rem 3rem;
+            padding: 1rem 2.5rem; /* Légèrement réduit */
             background: white;
             color: var(--dark);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: all 0.3s;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
@@ -176,9 +177,9 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
-        /* Maps Section */
+        /* Maps Section - ESPACE RÉDUIT */
         .maps {
-            padding: 8rem 2rem;
+            padding: 4rem 2rem; /* Réduit de 8rem à 4rem */
             background: var(--light);
         }
 
@@ -189,7 +190,7 @@
 
         .map-selector {
             max-width: 600px;
-            margin: 0 auto 3rem;
+            margin: 0 auto 2rem; /* Réduit de 3rem à 2rem */
         }
 
         .map-select {
@@ -216,7 +217,7 @@
 
         .map-viewer {
             position: relative;
-            height: 85vh;
+            height: 75vh; /* Légèrement réduit */
             border-radius: 30px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
@@ -308,10 +309,50 @@
             animation: spin 1s linear infinite;
         }
 
+        /* Footer Simple */
+        .simple-footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-item:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
+            }
+
+            .hero {
+                height: 60vh; /* Encore plus réduit sur mobile */
+                margin-top: 70px;
             }
 
             .map-viewer {
@@ -331,6 +372,11 @@
             
             .fullscreen-btn .fas {
                 margin-right: 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
 
@@ -404,6 +450,21 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer Simple -->
+    <footer class="simple-footer">
+        <div class="footer-content">
+            <span class="copyright">© 2025 Eco2Dev</span>
+            <a href="mailto:goueujean@gmail.com" class="footer-item">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="https://github.com/Jeant-Tim/" target="_blank" class="footer-item">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+            </a>
+        </div>
+    </footer>
 
     <script>
         // Fonction pour changer la carte
