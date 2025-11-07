@@ -1,0 +1,1 @@
+var json_M_Brimbo_8 = {"type":"FeatureCollection","name":"M_Brimbo_8","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"osm_id":"-1308081596","name":"Mbrimbo","type":"village"},"geometry":{"type":"Point","coordinates":[-4.8754824,6.0269727]}}]}
